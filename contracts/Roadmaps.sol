@@ -1414,254 +1414,64 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 }
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
-    string[] private weapons = ["Mars", "Venus"];
+    string[] private earlyEvents = ["Mars", "Venus"];
 
-    string[] private chestArmor = [
-        "Divine Robe",
-        "Silk Robe",
-        "Linen Robe",
-        "Robe",
-        "Shirt",
-        "Demon Husk",
-        "Dragonskin Armor",
-        "Studded Leather Armor",
-        "Hard Leather Armor",
-        "Leather Armor",
-        "Holy Chestplate",
-        "Ornate Chestplate",
-        "Plate Mail",
-        "Chain Mail",
-        "Ring Mail"
-    ];
+    string[] private midEvents = ["Jupiter", "Saturn"];
 
-    string[] private headArmor = [
-        "Ancient Helm",
-        "Ornate Helm",
-        "Great Helm",
-        "Full Helm",
-        "Helm",
-        "Demon Crown",
-        "Dragon's Crown",
-        "War Cap",
-        "Leather Cap",
-        "Cap",
-        "Crown",
-        "Divine Hood",
-        "Silk Hood",
-        "Linen Hood",
-        "Hood"
-    ];
+    string[] private lateEvents = ["Neptune", "Pluto"];
 
-    string[] private waistArmor = [
-        "Ornate Belt",
-        "War Belt",
-        "Plated Belt",
-        "Mesh Belt",
-        "Heavy Belt",
-        "Demonhide Belt",
-        "Dragonskin Belt",
-        "Studded Leather Belt",
-        "Hard Leather Belt",
-        "Leather Belt",
-        "Brightsilk Sash",
-        "Silk Sash",
-        "Wool Sash",
-        "Linen Sash",
-        "Sash"
-    ];
+    string[] private namePrefixes = ["Legendary", "Amazing"];
 
-    string[] private footArmor = [
-        "Holy Greaves",
-        "Ornate Greaves",
-        "Greaves",
-        "Chain Boots",
-        "Heavy Boots",
-        "Demonhide Boots",
-        "Dragonskin Boots",
-        "Studded Leather Boots",
-        "Hard Leather Boots",
-        "Leather Boots",
-        "Divine Slippers",
-        "Silk Slippers",
-        "Wool Shoes",
-        "Linen Shoes",
-        "Shoes"
-    ];
+    string[] private nameSuffixes = ["of Doom", "of the World"];
 
-    string[] private handArmor = [
-        "Holy Gauntlets",
-        "Ornate Gauntlets",
-        "Gauntlets",
-        "Chain Gloves",
-        "Heavy Gloves",
-        "Demon's Hands",
-        "Dragonskin Gloves",
-        "Studded Leather Gloves",
-        "Hard Leather Gloves",
-        "Leather Gloves",
-        "Divine Gloves",
-        "Silk Gloves",
-        "Wool Gloves",
-        "Linen Gloves",
-        "Gloves"
-    ];
-
-    string[] private necklaces = ["Necklace", "Amulet", "Pendant"];
-
-    string[] private rings = [
-        "Gold Ring",
-        "Silver Ring",
-        "Bronze Ring",
-        "Platinum Ring",
-        "Titanium Ring"
-    ];
-
-    string[] private suffixes = [
-        "of Power",
-        "of Giants",
-        "of Titans",
-        "of Skill",
-        "of Perfection",
-        "of Brilliance",
-        "of Enlightenment",
-        "of Protection",
-        "of Anger",
-        "of Rage",
-        "of Fury",
-        "of Vitriol",
-        "of the Fox",
-        "of Detection",
-        "of Reflection",
-        "of the Twins"
-    ];
-
-    string[] private namePrefixes = [
-        "Agony",
-        "Apocalypse",
-        "Armageddon",
-        "Beast",
-        "Behemoth",
-        "Blight",
-        "Blood",
-        "Bramble",
-        "Brimstone",
-        "Brood",
-        "Carrion",
-        "Cataclysm",
-        "Chimeric",
-        "Corpse",
-        "Corruption",
-        "Damnation",
-        "Death",
-        "Demon",
-        "Dire",
-        "Dragon",
-        "Dread",
-        "Doom",
-        "Dusk",
-        "Eagle",
-        "Empyrean",
-        "Fate",
-        "Foe",
-        "Gale",
-        "Ghoul",
-        "Gloom",
-        "Glyph",
-        "Golem",
-        "Grim",
-        "Hate",
-        "Havoc",
-        "Honour",
-        "Horror",
-        "Hypnotic",
-        "Kraken",
-        "Loath",
-        "Maelstrom",
-        "Mind",
-        "Miracle",
-        "Morbid",
-        "Oblivion",
-        "Onslaught",
-        "Pain",
-        "Pandemonium",
-        "Phoenix",
-        "Plague",
-        "Rage",
-        "Rapture",
-        "Rune",
-        "Skull",
-        "Sol",
-        "Soul",
-        "Sorrow",
-        "Spirit",
-        "Storm",
-        "Tempest",
-        "Torment",
-        "Vengeance",
-        "Victory",
-        "Viper",
-        "Vortex",
-        "Woe",
-        "Wrath",
-        "Light's",
-        "Shimmering"
-    ];
-
-    string[] private nameSuffixes = [
-        "Bane",
-        "Root",
-        "Bite",
-        "Song",
-        "Roar",
-        "Grasp",
-        "Instrument",
-        "Glow",
-        "Bender",
-        "Shadow",
-        "Whisper",
-        "Shout",
-        "Growl",
-        "Tear",
-        "Peak",
-        "Form",
-        "Sun",
-        "Moon"
-    ];
+    string[] private suffixes = ["bane", "shadow"];
 
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
-    function getWeapon(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WEAPON", weapons);
+    function get10Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "WEAPON", earlyEvents);
     }
 
-    function getChest(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "CHEST", chestArmor);
+    function get20Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "CHEST", earlyEvents);
     }
 
-    function getHead(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HEAD", headArmor);
+    function get30Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "HEAD", earlyEvents);
     }
 
-    function getWaist(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WAIST", waistArmor);
+    function get40Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "WAIST", midEvents);
     }
 
-    function getFoot(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "FOOT", footArmor);
+    function get50Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "FOOT", midEvents);
     }
 
-    function getHand(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HAND", handArmor);
+    function get60Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "HAND", midEvents);
     }
 
-    function getNeck(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "NECK", necklaces);
+    function get70Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "NECK", lateEvents);
     }
 
-    function getRing(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "RING", rings);
+    function get80Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "RING", lateEvents);
+    }
+
+    function get90Percent(uint256 tokenId) public view returns (string memory) {
+        return pluck(tokenId, "RING", lateEvents);
+    }
+
+    function get100Percent(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        return pluck(tokenId, "RING", lateEvents);
     }
 
     function pluck(
@@ -1710,42 +1520,50 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
-        string[17] memory parts;
+        string[21] memory parts;
         parts[
             0
         ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
-        parts[1] = getWeapon(tokenId);
+        parts[1] = get10Percent(tokenId);
 
         parts[2] = '</text><text x="10" y="40" class="base">';
 
-        parts[3] = getChest(tokenId);
+        parts[3] = get20Percent(tokenId);
 
         parts[4] = '</text><text x="10" y="60" class="base">';
 
-        parts[5] = getHead(tokenId);
+        parts[5] = get30Percent(tokenId);
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
-        parts[7] = getWaist(tokenId);
+        parts[7] = get40Percent(tokenId);
 
         parts[8] = '</text><text x="10" y="100" class="base">';
 
-        parts[9] = getFoot(tokenId);
+        parts[9] = get50Percent(tokenId);
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
-        parts[11] = getHand(tokenId);
+        parts[11] = get60Percent(tokenId);
 
         parts[12] = '</text><text x="10" y="140" class="base">';
 
-        parts[13] = getNeck(tokenId);
+        parts[13] = get70Percent(tokenId);
 
         parts[14] = '</text><text x="10" y="160" class="base">';
 
-        parts[15] = getRing(tokenId);
+        parts[15] = get80Percent(tokenId);
 
-        parts[16] = "</text></svg>";
+        parts[16] = '</text><text x="10" y="180" class="base">';
+
+        parts[17] = get90Percent(tokenId);
+
+        parts[18] = '</text><text x="10" y="200" class="base">';
+
+        parts[19] = get100Percent(tokenId);
+
+        parts[20] = "</text></svg>";
 
         string memory output = string(
             abi.encodePacked(
@@ -1772,6 +1590,9 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
                 parts[15],
                 parts[16]
             )
+        );
+        output = string(
+            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
         );
 
         string memory json = Base64.encode(
