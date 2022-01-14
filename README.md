@@ -1,15 +1,11 @@
-# Basic Sample Hardhat Project
+## Setup
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+- `yarn install`
+- Install 'Ethereum Remix' extension
+- Run 'Ethereum REMIX: Focus on Remix View' command
+- Enable compiler
+- Click Compiler, Activate, then choose 'contracts/Roadmaps.sol'
+- Run `npx hardhat node` in terminal to start a local Eth network
+- Click 'Run & Deploy', Activate, then choose 'Connect' on Local network
+- Chooce contracts/Roadmaps.sol, then click 'Compile' after connecting
+- Choose contract Roadmaps - Roadmaps.sol, then call some functions
