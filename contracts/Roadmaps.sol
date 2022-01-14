@@ -1526,7 +1526,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         string[17] memory parts;
         parts[0] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
-        parts[1] = getWeapon(tokenId);
+        parts[1] = "10%" + getWeapon(tokenId);
 
         parts[2] = '</text><text x="10" y="40" class="base">';
 
