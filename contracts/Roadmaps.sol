@@ -1460,15 +1460,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function get70Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "NECK");
+        return latePluck(tokenId, "get70");
     }
 
     function get80Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "RING");
+        return latePluck(tokenId, "get80");
     }
 
     function get90Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "RING");
+        return latePluck(tokenId, "get90");
     }
 
     function get100Percent(uint256 tokenId)
@@ -1476,7 +1476,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string memory)
     {
-        return latePluck(tokenId, "RING");
+        return latePluck(tokenId, "get100");
     }
 
     function pluck(
@@ -1503,14 +1503,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         string memory brandName = brandNameChoices[
             rand % brandNameChoices.length
         ];
-        string[1] memory lateEvents = [
+        string[2] memory lateEvents = [
             string(
                 abi.encodePacked(
                     "We collaborate with ",
                     brandName,
                     " on an EXCLUSIVE merch drop"
                 )
-            )
+            ),
+            "We buy a plot of land in the Metaverse"
         ];
 
         // "We buy a plot of land in the Metaverse",
