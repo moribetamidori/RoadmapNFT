@@ -1654,22 +1654,22 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
         );
 
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Bag #',
-                        toString(tokenId),
-                        '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
-                        Base64.encode(bytes(output)),
-                        '"}'
-                    )
-                )
-            )
-        );
-        output = string(
-            abi.encodePacked("data:application/json;base64,", json)
-        );
+        // string memory json = Base64.encode(
+        //     bytes(
+        //         string(
+        //             abi.encodePacked(
+        //                 '{"name": "Bag #',
+        //                 toString(tokenId),
+        //                 '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+        //                 Base64.encode(bytes(output)),
+        //                 '"}'
+        //             )
+        //         )
+        //     )
+        // );
+        // output = string(
+        //     abi.encodePacked("data:application/json;base64,", json)
+        // );
 
         return output;
     }
