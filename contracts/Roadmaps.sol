@@ -1414,11 +1414,16 @@ abstract contract ERC721Enumerable is ERC721, IERC721Enumerable {
 }
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
+    string[] private brandNameChoices = [
+        "Marvel",
+        "Nike",
+        "Louis Vutton",
+        "Patron"
+    ];
+
     string[] private earlyEvents = ["Mars", "Venus"];
 
     string[] private midEvents = ["Jupiter", "Saturn"];
-
-    string[] private lateEvents = ["Neptune", "Pluto"];
 
     string[] private namePrefixes = ["Legendary", "Amazing"];
 
@@ -1455,15 +1460,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function get70Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "NECK", lateEvents);
+        return latePluck(tokenId, "NECK");
     }
 
     function get80Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "RING", lateEvents);
+        return latePluck(tokenId, "RING");
     }
 
     function get90Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "RING", lateEvents);
+        return latePluck(tokenId, "RING");
     }
 
     function get100Percent(uint256 tokenId)
@@ -1471,7 +1476,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string memory)
     {
-        return pluck(tokenId, "RING", lateEvents);
+        return latePluck(tokenId, "RING");
     }
 
     function pluck(
@@ -1483,34 +1488,40 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             string(abi.encodePacked(keyPrefix, toString(tokenId)))
         );
         string memory output = sourceArray[rand % sourceArray.length];
-        uint256 greatness = rand % 21;
-        if (greatness > 14) {
-            output = string(
-                abi.encodePacked(output, " ", suffixes[rand % suffixes.length])
-            );
-        }
-        if (greatness >= 19) {
-            string[2] memory name;
-            name[0] = namePrefixes[rand % namePrefixes.length];
-            name[1] = nameSuffixes[rand % nameSuffixes.length];
-            if (greatness == 19) {
-                output = string(
-                    abi.encodePacked('"', name[0], " ", name[1], '" ', output)
-                );
-            } else {
-                output = string(
-                    abi.encodePacked(
-                        '"',
-                        name[0],
-                        " ",
-                        name[1],
-                        '" ',
-                        output,
-                        " +1"
-                    )
-                );
-            }
-        }
+        return output;
+    }
+
+    function latePluck(uint256 tokenId, string memory keyPrefix)
+        internal
+        view
+        returns (string memory)
+    {
+        uint256 rand = random(
+            string(abi.encodePacked(keyPrefix, toString(tokenId)))
+        );
+
+        string memory brandName = brandNameChoices[
+            rand % brandNameChoices.length
+        ];
+        string[1] memory lateEvents = [
+            string(
+                abi.encodePacked(
+                    "We collaborate with ",
+                    brandName,
+                    " on an EXCLUSIVE merch drop"
+                )
+            )
+        ];
+
+        // "We buy a plot of land in the Metaverse",
+        // "We host " + eventType + "in the Metaverse",
+        // "We launch a Play-To-Earn game, allowing you to stake your " + animalName,
+        // "We release the first edition of our comic, in collaboration with " + artistName,
+        // "We donate " + amount + " to " + charityName,
+        // "We host an art gallery event IRL in " + cityName,
+        // "We release Roadmap 2.0",
+        // "We release " + animalName + " as voxel avatars for the metaverse"
+        string memory output = lateEvents[rand % lateEvents.length];
         return output;
     }
 
