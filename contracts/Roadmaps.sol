@@ -1425,21 +1425,41 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "duck",
         "goose",
         "ant",
-        "flower"
+        "flower",
+        "banana",
+        "hat",
+        "knight",
+        "sailor",
+        "guy",
+        "gal",
+        "wolf",
+        "elephant"
     ];
 
     string[] private nftPrefixChoices = [
         "dizzy",
         "cool",
         "tripping",
-        "sad"
+        "sad",
+        "confused",
+        "vibing",
+        "invisible",
+        "dumb",
+        "sleepy",
+        "hungry",
+        "mindful",
+        "conscious",
+        "epic",
+        "legendary"
+
     ];
 
     string[] private GroupChoices = [
         "supporters",
         "mafia",
         "gang members",
-        "fools"
+        "fools",
+        "community members"
     ];
 
 
@@ -1522,17 +1542,28 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         // string memory brandName = brandNameChoices[
         //     rand % brandNameChoices.length
         // ];
-        string[5] memory earlyEvents = [
+        string[6] memory earlyEvents = [
            string(abi.encodePacked("We pay back and feed our ", groupName)),
-           string(abi.encodePacked("We distribute 10 free claim opportunities to early ",groupName, " from our community.")),
+           string(abi.encodePacked("We distribute 10 free claim opportunities to early ",groupName, ".")),
             "Our first global event will take place in Metaverse",
             "We will launch a virtual event where we will talk about NFTs",
-            string(abi.encodePacked("We want to show our appreciation by airdropping special 5 ",NFTname, " to 5 early ",groupName,"."))
+            string(abi.encodePacked("We want to show our appreciation by airdropping special 5 ",NFTname, " to 5 early ",groupName,".")),
+            string(abi.encodePacked("We airdrop 10 ",NFTname, " in discord secretly."))
         ];
         
         string[3] memory output = [earlyEvents[rand % earlyEvents.length],
                                 earlyEvents[(rand+1) % earlyEvents.length],
                                 earlyEvents[(rand+2) % earlyEvents.length] ]; //could be more flexible
+
+        string[2] memory earlyEvents_generous = [
+            "We will launch a meme challenge among holders -- 10ETH prize",
+            string(abi.encodePacked("We will give away 99% of our sales to our ", groupName,"."))
+        ];
+
+        string[1] memory earlyEvents_dramatic = [
+            "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
+        ];
+        
         return output;
     }
 
