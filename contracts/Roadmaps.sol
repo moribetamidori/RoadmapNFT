@@ -1459,7 +1459,8 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "mafia",
         "gang members",
         "fools",
-        "community members"
+        "community members",
+        "grandmas"
     ];
 
 
@@ -1548,7 +1549,10 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             "Our first global event will take place in Metaverse",
             "We will launch a virtual event where we will talk about NFTs",
             string(abi.encodePacked("We want to show our appreciation by airdropping special 5 ",NFTname, " to 5 early ",groupName,".")),
-            string(abi.encodePacked("We airdrop 10 ",NFTname, " in discord secretly."))
+            string(abi.encodePacked("We airdrop 10 ",NFTname, " in discord secretly.")),
+            "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
+            "We will have the origins & storyline Introduced"
+
         ];
         
         string[3] memory output = [earlyEvents[rand % earlyEvents.length],
@@ -1558,6 +1562,10 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         string[2] memory earlyEvents_generous = [
             "We will launch a meme challenge among holders -- 10ETH prize",
             string(abi.encodePacked("We will give away 99% of our sales to our ", groupName,"."))
+        ];
+
+        string[2] memory earlyEvents_lazy = [
+            "We will open a Discord".
         ];
 
         string[1] memory earlyEvents_dramatic = [
