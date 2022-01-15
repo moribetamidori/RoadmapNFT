@@ -1421,7 +1421,27 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "Patron"
     ];
 
-    string[] private earlyEvents = ["Mars", "Venus"];
+    string[] private nftEntityChoices = [
+        "duck",
+        "goose",
+        "ant",
+        "flower"
+    ];
+
+    string[] private nftPrefixChoices = [
+        "dizzy",
+        "cool",
+        "tripping",
+        "sad"
+    ];
+
+    string[] private GroupChoices = [
+        "supporters",
+        "mafia",
+        "gang members",
+        "fools"
+    ];
+
 
     string[] private midEvents = ["Jupiter", "Saturn"];
 
@@ -1435,16 +1455,8 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
-    function get10Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WEAPON", earlyEvents);
-    }
-
-    function get20Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "CHEST", earlyEvents);
-    }
-
-    function get30Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HEAD", earlyEvents);
+    function getEarly(uint256 tokenId) public view returns (string[3] memory) {
+        return earlyPluck(tokenId);
     }
 
     function get40Percent(uint256 tokenId) public view returns (string memory) {
@@ -1488,6 +1500,39 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             string(abi.encodePacked(keyPrefix, toString(tokenId)))
         );
         string memory output = sourceArray[rand % sourceArray.length];
+        return output;
+    }
+
+    function earlyPluck(uint256 tokenId)
+        internal
+        view
+        returns (string[3] memory)
+    {
+        uint256 rand = random(
+            toString(tokenId)
+        );
+
+        string memory NFTname = string(abi.encodePacked(
+            nftPrefixChoices[rand % nftPrefixChoices.length],
+            " ",
+            nftEntityChoices[rand % nftEntityChoices.length]));
+        
+        string memory groupName = GroupChoices[rand % GroupChoices.length];
+
+        string memory brandName = brandNameChoices[
+            rand % brandNameChoices.length
+        ];
+        string[5] memory earlyEvents = [
+           string(abi.encodePacked("We pay back and feed our ", groupName)),
+           string(abi.encodePacked("We distribute 10 free claim opportunities to early ",groupName, " from our community.")),
+            "Our first global event will take place in Metaverse",
+            "We will launch a virtual event where we will talk about NFTs",
+            string(abi.encodePacked("We want to show our appreciation by airdropping special 5 ",NFTname, " to 5 early ",groupName,"."))
+        ];
+        
+        string[3] memory output = [earlyEvents[rand % earlyEvents.length],
+                                earlyEvents[(rand+1) % earlyEvents.length],
+                                earlyEvents[(rand+2) % earlyEvents.length] ]; //could be more flexible
         return output;
     }
 
@@ -1537,15 +1582,17 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             0
         ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
-        parts[1] = get10Percent(tokenId);
+        string[3] memory earlyparts = getEarly(tokenId);
+
+        parts[1] = string(abi.encodePacked("10%: ",earlyparts[0]));
 
         parts[2] = '</text><text x="10" y="40" class="base">';
 
-        parts[3] = get20Percent(tokenId);
+        parts[3] =  string(abi.encodePacked("20%: ",earlyparts[1]));
 
         parts[4] = '</text><text x="10" y="60" class="base">';
 
-        parts[5] = get30Percent(tokenId);
+        parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
@@ -1607,22 +1654,22 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
         );
 
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Bag #',
-                        toString(tokenId),
-                        '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
-                        Base64.encode(bytes(output)),
-                        '"}'
-                    )
-                )
-            )
-        );
-        output = string(
-            abi.encodePacked("data:application/json;base64,", json)
-        );
+        // string memory json = Base64.encode(
+        //     bytes(
+        //         string(
+        //             abi.encodePacked(
+        //                 '{"name": "Bag #',
+        //                 toString(tokenId),
+        //                 '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+        //                 Base64.encode(bytes(output)),
+        //                 '"}'
+        //             )
+        //         )
+        //     )
+        // );
+        // output = string(
+        //     abi.encodePacked("data:application/json;base64,", json)
+        // );
 
         return output;
     }
