@@ -19,7 +19,6 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "Patron"
     ];
 
-<<<<<<< HEAD
     string[] private nftEntityChoices = [
         "duck",
         "goose",
@@ -50,13 +49,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "conscious",
         "epic",
         "legendary"
-
     ];
-=======
-    string[] private nftEntityChoices = ["duck", "goose", "ant", "flower"];
-
-    string[] private nftPrefixChoices = ["dizzy", "cool", "tripping", "sad"];
->>>>>>> b6403a7467f64d80a9322d77752410eccd959a06
 
     string[] private GroupChoices = [
         "supporters",
@@ -131,44 +124,13 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         // string memory brandName = brandNameChoices[
         //     rand % brandNameChoices.length
         // ];
-<<<<<<< HEAD
-        string[6] memory earlyEvents = [
-           string(abi.encodePacked("We pay back and feed our ", groupName)),
-           string(abi.encodePacked("We distribute 10 free claim opportunities to early ",groupName, ".")),
-            "Our first global event will take place in Metaverse",
-            "We will launch a virtual event where we will talk about NFTs",
-            string(abi.encodePacked("We want to show our appreciation by airdropping special 5 ",NFTname, " to 5 early ",groupName,".")),
-            string(abi.encodePacked("We airdrop 10 ",NFTname, " in discord secretly.")),
-            "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
-            "We will have the origins & storyline Introduced"
-
-        ];
-        
-        string[3] memory output = [earlyEvents[rand % earlyEvents.length],
-                                earlyEvents[(rand+1) % earlyEvents.length],
-                                earlyEvents[(rand+2) % earlyEvents.length] ]; //could be more flexible
-
-        string[2] memory earlyEvents_generous = [
-            "We will launch a meme challenge among holders -- 10ETH prize",
-            string(abi.encodePacked("We will give away 99% of our sales to our ", groupName,"."))
-        ];
-
-        string[2] memory earlyEvents_lazy = [
-            "We will open a Discord".
-        ];
-
-        string[1] memory earlyEvents_dramatic = [
-            "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
-        ];
-        
-=======
-        string[5] memory earlyEvents = [
+        string[8] memory earlyEvents = [
             string(abi.encodePacked("We pay back and feed our ", groupName)),
             string(
                 abi.encodePacked(
                     "We distribute 10 free claim opportunities to early ",
                     groupName,
-                    " from our community."
+                    "."
                 )
             ),
             "Our first global event will take place in Metaverse",
@@ -181,7 +143,16 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
                     groupName,
                     "."
                 )
-            )
+            ),
+            string(
+                abi.encodePacked(
+                    "We airdrop 10 ",
+                    NFTname,
+                    " in discord secretly."
+                )
+            ),
+            "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
+            "We will have the origins & storyline Introduced"
         ];
 
         string[3] memory output = [
@@ -189,7 +160,24 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             earlyEvents[(rand + 1) % earlyEvents.length],
             earlyEvents[(rand + 2) % earlyEvents.length]
         ]; //could be more flexible
->>>>>>> b6403a7467f64d80a9322d77752410eccd959a06
+
+        string[2] memory earlyEvents_generous = [
+            "We will launch a meme challenge among holders -- 10ETH prize",
+            string(
+                abi.encodePacked(
+                    "We will give away 99% of our sales to our ",
+                    groupName,
+                    "."
+                )
+            )
+        ];
+
+        string[1] memory earlyEvents_lazy = ["We will open a Discord"];
+
+        string[1] memory earlyEvents_dramatic = [
+            "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
+        ];
+
         return output;
     }
 
