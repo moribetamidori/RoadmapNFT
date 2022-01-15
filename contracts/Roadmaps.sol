@@ -1459,24 +1459,8 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return pluck(tokenId, "HAND", midEvents);
     }
 
-    function get70Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "get70");
-    }
-
-    function get80Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "get80");
-    }
-
-    function get90Percent(uint256 tokenId) public view returns (string memory) {
-        return latePluck(tokenId, "get90");
-    }
-
-    function get100Percent(uint256 tokenId)
-        public
-        view
-        returns (string memory)
-    {
-        return latePluck(tokenId, "get100");
+    function getLate(uint256 tokenId) public view returns (string[4] memory) {
+        return latePluck(tokenId);
     }
 
     function pluck(
@@ -1491,19 +1475,18 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return output;
     }
 
-    function latePluck(uint256 tokenId, string memory keyPrefix)
+    function latePluck(uint256 tokenId)
         internal
         view
-        returns (string memory)
+        returns (string[4] memory)
     {
-        uint256 rand = random(
-            string(abi.encodePacked(keyPrefix, toString(tokenId)))
-        );
+        uint256 rand = random(string(abi.encodePacked(toString(tokenId))));
 
         string memory brandName = brandNameChoices[
             rand % brandNameChoices.length
         ];
-        string[2] memory lateEvents = [
+
+        string[4] memory lateEvents = [
             string(
                 abi.encodePacked(
                     "We collaborate with ",
@@ -1511,9 +1494,10 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
                     " on an EXCLUSIVE merch drop"
                 )
             ),
-            "We buy a plot of land in the Metaverse"
+            "We buy a plot of land in the Metaverse",
+            "We release Roadmap 2.0",
+            "We release edition #1 of our comic"
         ];
-
         // "We buy a plot of land in the Metaverse",
         // "We host " + eventType + "in the Metaverse",
         // "We launch a Play-To-Earn game, allowing you to stake your " + animalName,
@@ -1522,107 +1506,13 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         // "We host an art gallery event IRL in " + cityName,
         // "We release Roadmap 2.0",
         // "We release " + animalName + " as voxel avatars for the metaverse"
-        string memory output = lateEvents[rand % lateEvents.length];
-        return output;
-    }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override
-        returns (string memory)
-    {
-        string[21] memory parts;
-        parts[
-            0
-        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
-
-        parts[1] = get10Percent(tokenId);
-
-        parts[2] = '</text><text x="10" y="40" class="base">';
-
-        parts[3] = get20Percent(tokenId);
-
-        parts[4] = '</text><text x="10" y="60" class="base">';
-
-        parts[5] = get30Percent(tokenId);
-
-        parts[6] = '</text><text x="10" y="80" class="base">';
-
-        parts[7] = get40Percent(tokenId);
-
-        parts[8] = '</text><text x="10" y="100" class="base">';
-
-        parts[9] = get50Percent(tokenId);
-
-        parts[10] = '</text><text x="10" y="120" class="base">';
-
-        parts[11] = get60Percent(tokenId);
-
-        parts[12] = '</text><text x="10" y="140" class="base">';
-
-        parts[13] = get70Percent(tokenId);
-
-        parts[14] = '</text><text x="10" y="160" class="base">';
-
-        parts[15] = get80Percent(tokenId);
-
-        parts[16] = '</text><text x="10" y="180" class="base">';
-
-        parts[17] = get90Percent(tokenId);
-
-        parts[18] = '</text><text x="10" y="200" class="base">';
-
-        parts[19] = get100Percent(tokenId);
-
-        parts[20] = "</text></svg>";
-
-        string memory output = string(
-            abi.encodePacked(
-                parts[0],
-                parts[1],
-                parts[2],
-                parts[3],
-                parts[4],
-                parts[5],
-                parts[6],
-                parts[7],
-                parts[8]
-            )
-        );
-        output = string(
-            abi.encodePacked(
-                output,
-                parts[9],
-                parts[10],
-                parts[11],
-                parts[12],
-                parts[13],
-                parts[14],
-                parts[15],
-                parts[16]
-            )
-        );
-        output = string(
-            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
-        );
-
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "Bag #',
-                        toString(tokenId),
-                        '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
-                        Base64.encode(bytes(output)),
-                        '"}'
-                    )
-                )
-            )
-        );
-        output = string(
-            abi.encodePacked("data:application/json;base64,", json)
-        );
+        string[4] memory output = [
+            lateEvents[rand % lateEvents.length],
+            lateEvents[(rand + 1) % lateEvents.length],
+            lateEvents[(rand + 2) % lateEvents.length],
+            lateEvents[(rand + 3) % lateEvents.length]
+        ];
 
         return output;
     }
