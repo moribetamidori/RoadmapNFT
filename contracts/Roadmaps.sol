@@ -19,15 +19,45 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "Patron"
     ];
 
-    string[] private nftEntityChoices = ["duck", "goose", "ant", "flower"];
+    string[] private nftEntityChoices = [
+        "duck",
+        "goose",
+        "ant",
+        "flower",
+        "banana",
+        "hat",
+        "knight",
+        "sailor",
+        "guy",
+        "gal",
+        "wolf",
+        "elephant"
+    ];
 
-    string[] private nftPrefixChoices = ["dizzy", "cool", "tripping", "sad"];
+    string[] private nftPrefixChoices = [
+        "dizzy",
+        "cool",
+        "tripping",
+        "sad",
+        "confused",
+        "vibing",
+        "invisible",
+        "dumb",
+        "sleepy",
+        "hungry",
+        "mindful",
+        "conscious",
+        "epic",
+        "legendary"
+    ];
 
     string[] private GroupChoices = [
         "supporters",
         "mafia",
         "gang members",
-        "fools"
+        "fools",
+        "community members",
+        "grandmas"
     ];
     
     string[] private numOfPeople = ["1", "10", "100", "1000", "10000", "31415"];
@@ -115,13 +145,13 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         // string memory brandName = brandNameChoices[
         //     rand % brandNameChoices.length
         // ];
-        string[5] memory earlyEvents = [
+        string[8] memory earlyEvents = [
             string(abi.encodePacked("We pay back and feed our ", groupName)),
             string(
                 abi.encodePacked(
                     "We distribute 10 free claim opportunities to early ",
                     groupName,
-                    " from our community."
+                    "."
                 )
             ),
             "Our first global event will take place in Metaverse",
@@ -134,7 +164,16 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
                     groupName,
                     "."
                 )
-            )
+            ),
+            string(
+                abi.encodePacked(
+                    "We airdrop 10 ",
+                    NFTname,
+                    " in discord secretly."
+                )
+            ),
+            "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
+            "We will have the origins & storyline Introduced"
         ];
 
         string[3] memory output = [
@@ -142,6 +181,24 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             earlyEvents[(rand + 1) % earlyEvents.length],
             earlyEvents[(rand + 2) % earlyEvents.length]
         ]; //could be more flexible
+
+        string[2] memory earlyEvents_generous = [
+            "We will launch a meme challenge among holders -- 10ETH prize",
+            string(
+                abi.encodePacked(
+                    "We will give away 99% of our sales to our ",
+                    groupName,
+                    "."
+                )
+            )
+        ];
+
+        string[1] memory earlyEvents_lazy = ["We will open a Discord"];
+
+        string[1] memory earlyEvents_dramatic = [
+            "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
+        ];
+
         return output;
     }
 
