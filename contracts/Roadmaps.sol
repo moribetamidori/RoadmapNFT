@@ -1441,7 +1441,12 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "gang members",
         "fools"
     ];
+    
+    string[] private numOfPeople = ["1", "10", "100", "1000", "10000", "31415"];
 
+    string[] private amountMoney = ["1","10","69","420","666","999","4242","8888", "10000"];
+
+    string[] private physicalArt = ["t-shirt", "cup", "print"];
 
     string[] private midEvents = ["Jupiter", "Saturn"];
 
@@ -1455,20 +1460,35 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
+    function toUpper(string memory str) internal pure returns (string memory) {
+        bytes memory bStr = bytes(str);
+        bytes memory bUpper = new bytes(bStr.length);
+        for (uint i = 0; i < bStr.length; i++) {
+            // Lowercase character...
+            if ((uint8(bStr[i]) >= 97) && (uint8(bStr[i]) <= 122)) {
+                // So we subtract 32 to make it uppercase
+                bUpper[i] = bytes1(uint8(bStr[i]) - 32);
+            } else {
+                bUpper[i] = bStr[i];
+            }
+        }
+        return string(bUpper);
+    }
+
+    function getSlice(uint256 begin, uint256 end, string memory text) public pure returns (string memory) {
+        bytes memory a = new bytes(end-begin+1);
+        for(uint i=0;i<=end-begin;i++){
+            a[i] = bytes(text)[i+begin-1];
+        }
+        return string(a);    
+    }
+
     function getEarly(uint256 tokenId) public view returns (string[3] memory) {
         return earlyPluck(tokenId);
     }
 
-    function get40Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "WAIST", midEvents);
-    }
-
-    function get50Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "FOOT", midEvents);
-    }
-
-    function get60Percent(uint256 tokenId) public view returns (string memory) {
-        return pluck(tokenId, "HAND", midEvents);
+    function getMiddle(uint256 tokenId) public view returns (string[3] memory) {
+        return middlePluck(tokenId);
     }
 
     function get70Percent(uint256 tokenId) public view returns (string memory) {
@@ -1536,6 +1556,57 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return output;
     }
 
+    function middlePluck(uint256 tokenId)
+        internal
+        view
+        returns (string[3] memory)
+    {
+         uint256 rand = random(
+            toString(tokenId)
+        );
+
+        string memory artItem = physicalArt[rand % physicalArt.length];
+
+        string memory numPeople = numOfPeople[rand % numOfPeople.length];
+
+        string memory numPeople2 = numOfPeople[(rand+1) % numOfPeople.length];
+
+        string memory money = amountMoney[rand % amountMoney.length];
+        
+        string memory tokenPrefix = toUpper(nftPrefixChoices[rand % nftPrefixChoices.length]);
+        
+        string memory tokenEntity = toUpper(nftEntityChoices[rand % nftEntityChoices.length]);
+
+        string memory tokenName = string(abi.encodePacked(
+            getSlice(1,3,tokenPrefix),
+            getSlice(1,3,tokenEntity)));
+
+
+        string[3] memory middleEvents = [
+            string (
+                abi.encodePacked(
+                    "Select ", numPeople, " holders to give away ", artItem, " with artist' signature."
+                )
+            ),
+            string (
+                abi.encodePacked(
+                    "Launch $", tokenName, " utility token"
+                )
+            ),
+            string (
+                abi.encodePacked("Community Raffle! Lucky ", numPeople2, " holders will be given $", money, "."
+                )
+            )
+        ];
+        
+        string[3] memory output = [middleEvents[rand % middleEvents.length],
+                                middleEvents[(rand+1) % middleEvents.length],
+                                middleEvents[(rand+2) % middleEvents.length] ]; //could be more flexible
+        return output;
+    }
+
+    
+
     function latePluck(uint256 tokenId, string memory keyPrefix)
         internal
         view
@@ -1583,6 +1654,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
         string[3] memory earlyparts = getEarly(tokenId);
+        string[3] memory middleparts = getMiddle(tokenId);
 
         parts[1] = string(abi.encodePacked("10%: ",earlyparts[0]));
 
@@ -1596,15 +1668,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
-        parts[7] = get40Percent(tokenId);
+        parts[7] = string(abi.encodePacked("10%: ",earlyparts[0]));
 
         parts[8] = '</text><text x="10" y="100" class="base">';
 
-        parts[9] = get50Percent(tokenId);
+        parts[9] = string(abi.encodePacked("10%: ",earlyparts[0]));
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
-        parts[11] = get60Percent(tokenId);
+        parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
 
         parts[12] = '</text><text x="10" y="140" class="base">';
 
