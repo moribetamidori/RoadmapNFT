@@ -1519,9 +1519,9 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         
         string memory groupName = GroupChoices[rand % GroupChoices.length];
 
-        string memory brandName = brandNameChoices[
-            rand % brandNameChoices.length
-        ];
+        // string memory brandName = brandNameChoices[
+        //     rand % brandNameChoices.length
+        // ];
         string[5] memory earlyEvents = [
            string(abi.encodePacked("We pay back and feed our ", groupName)),
            string(abi.encodePacked("We distribute 10 free claim opportunities to early ",groupName, " from our community.")),
@@ -1577,10 +1577,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
+        // some randomization of formatting
+        uint256 rand = random(toString(tokenId));
+        
+
+
         string[21] memory parts;
         parts[
             0
-        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 350 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
+        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
         string[3] memory earlyparts = getEarly(tokenId);
 
@@ -1592,7 +1597,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[4] = '</text><text x="10" y="60" class="base">';
 
-        parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
+        uint256 rarenum = rand % 21;
+        if (rarenum<15){
+            parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
+        } else if (rarenum<18){
+            parts[5] = string(abi.encodePacked("27.1828%: ", earlyparts[2]));
+        }
+        else {
+            parts[5] = string(abi.encodePacked("31.4159%: ", earlyparts[2]));
+        }
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
