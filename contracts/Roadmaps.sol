@@ -207,7 +207,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[
             0
-        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
+        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 400"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
         string memory NFTname = string(
             abi.encodePacked(
@@ -233,11 +233,11 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[8] = '</text><text x="10" y="170" class="base">';
 
-        parts[9] = string(abi.encodePacked("40%: ", earlyparts[0]));
+        parts[9] = string(abi.encodePacked("40%: ", middleparts[0]));
 
         parts[10] = '</text><text x="10" y="200" class="base">';
 
-        parts[11] = string(abi.encodePacked("50%: ", earlyparts[0]));
+        parts[11] = string(abi.encodePacked("50%: ", middleparts[1]));
 
         parts[12] = '</text><text x="10" y="230" class="base">';
 
