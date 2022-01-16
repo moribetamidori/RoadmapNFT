@@ -62,6 +62,38 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We launch a play-to-earn game, allowing holders to stake their NFT for $ROAD"
     ];
 
+     string[] private nftEntityChoices = [
+        "duck",
+        "goose",
+        "ant",
+        "flower",
+        "banana",
+        "hat",
+        "knight",
+        "sailor",
+        "guy",
+        "gal",
+        "wolf",
+        "elephant"
+    ];
+
+    string[] private nftPrefixChoices = [
+        "dizzy",
+        "cool",
+        "tripping",
+        "sad",
+        "confused",
+        "vibing",
+        "invisible",
+        "dumb",
+        "sleepy",
+        "hungry",
+        "mindful",
+        "conscious",
+        "epic",
+        "legendary"
+    ];
+
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
@@ -155,62 +187,73 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         uint256 rand = random(toString(tokenId));
 
-        string[21] memory parts;
-
-        parts[
-            0
-        ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
-
         string[3] memory earlyparts = getEarly(tokenId);
         string[3] memory middleparts = getMiddle(tokenId);
         string[4] memory lateParts = getLate(tokenId);
 
-        parts[1] = string(abi.encodePacked("10%: ", earlyparts[0]));
+        string[23] memory parts;        
 
-        parts[2] = '</text><text x="10" y="40" class="base">';
+        parts[0] = '<svg id="road" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 450 400" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" width="450" height="400"><defs><linearGradient id="road-rect1-fill" x1="0.042548" y1="0.082893" x2="0.5" y2="0.984965" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)"><stop id="road-rect1-fill-0" offset="0%" stop-color="#000"/><stop id="road-rect1-fill-1" offset="100%" stop-color="#a5a094"/></linearGradient><radialGradient id="road-rect2-fill" cx="0" cy="0" r="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1.911418 0.5 0.938643)"><stop id="road-rect2-fill-0" offset="0%" stop-color="#343ed5"/><stop id="road-rect2-fill-1" offset="100%" stop-color="#6d42a7"/></radialGradient></defs><rect id="road-rect1" style="mix-blend-mode:saturation" width="450" height="400" rx="0" ry="0" opacity="0.66" fill="url(#road-rect1-fill)" stroke-width="0"/><rect id="road-rect2" style="mix-blend-mode:hard-light" width="56.562373" height="400" rx="0" ry="0" transform="translate(363.396994 0)" fill="url(#road-rect2-fill)" stroke-width="0"/><line id="road-line1" x1="0" y1="-200" x2="0" y2="200" transform="translate(395 200)" opacity="0.99" paint-order="markers fill stroke" fill="#784f4f" stroke="#9c976e" stroke-width="3" stroke-dashoffset="1"/><line id="road-copy-of-line" x1="0" y1="-200" x2="0" y2="200" transform="translate(388 200)" opacity="0.99" paint-order="markers fill stroke" fill="#784f4f" stroke="#9c976e" stroke-width="3" stroke-dashoffset="1"/><path id="road-path1" d="" fill="none" stroke="#3f5787" stroke-width="0.9"/><path id="road-path2" d="" fill="none" stroke="#3f5787" stroke-width="0.9"/><style>.base { fill: khaki;font-family: "Comic Sans MS";font-size: 11px;}.title {fill: khaki;font-family: "Courier";font-size: 20px;}</style><text x="20" y="40" class="title">';
 
-        parts[3] = string(abi.encodePacked("20%: ", earlyparts[1]));
+        string memory NFTname = string(
+            abi.encodePacked(
+                nftPrefixChoices[rand % nftPrefixChoices.length],
+                " ",
+                nftEntityChoices[rand % nftEntityChoices.length]
+            )
+        );
 
-        parts[4] = '</text><text x="10" y="60" class="base">';
+        parts[1] = string(abi.encodePacked("Roadmap for ", NFTname));
+
+        parts[2] = '</text><text x="10" y="80" class="base">';
+
+        parts[3] = string(abi.encodePacked("10%: ", earlyparts[0]));
+
+        parts[4] = '</text><text x="10" y="110" class="base">';
+
+        parts[5] = string(abi.encodePacked("20%: ", earlyparts[1]));
+
+        parts[6] = '</text><text x="10" y="140" class="base">';
 
         uint256 rarenum = rand % 21;
         if (rarenum < 15) {
-            parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
-        } else if (rarenum < 18) {
-            parts[5] = string(abi.encodePacked("27.1828%: ", earlyparts[2]));
+            parts[7] = string(abi.encodePacked("30%: ", earlyparts[2]));
+        } else if (rarenum < 19) {
+            parts[7] = string(abi.encodePacked("31.4159%: ", earlyparts[2]));
         } else {
-            parts[5] = string(abi.encodePacked("31.4159%: ", earlyparts[2]));
+            parts[7] = string(abi.encodePacked("27.1828%: ", earlyparts[2]));
         }
 
-        parts[6] = '</text><text x="10" y="80" class="base">';
+        parts[8] = '</text><text x="10" y="170" class="base">';
 
-        parts[7] = string(abi.encodePacked("40%: ", earlyparts[0]));
+        parts[9] = string(abi.encodePacked("40%: ", earlyparts[0]));
 
-        parts[8] = '</text><text x="10" y="100" class="base">';
+        parts[10] = '</text><text x="10" y="200" class="base">';
 
-        parts[9] = string(abi.encodePacked("50%: ", earlyparts[0]));
+        parts[11] = string(abi.encodePacked("50%: ", earlyparts[0]));
 
-        parts[10] = '</text><text x="10" y="120" class="base">';
+        parts[12] = '</text><text x="10" y="230" class="base">';
 
-        parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
+        parts[13] = string(abi.encodePacked("60%: ", middleparts[2]));
 
-        parts[12] = '</text><text x="10" y="140" class="base">';
+        parts[14] = '</text><text x="10" y="260" class="base">';
 
-        parts[13] = string(abi.encodePacked("70%: ", lateParts[0]));
+        parts[15] = string(abi.encodePacked("70%: ", lateParts[0]));
 
-        parts[14] = '</text><text x="10" y="160" class="base">';
+        parts[16] = '</text><text x="10" y="290" class="base">';
 
-        parts[15] = string(abi.encodePacked("80%: ", lateParts[1]));
+        parts[17] = string(abi.encodePacked("80%: ", lateParts[1]));
 
-        parts[16] = '</text><text x="10" y="180" class="base">';
+        parts[18] = '</text><text x="10" y="320" class="base">';
 
-        parts[17] = string(abi.encodePacked("90%: ", lateParts[2]));
+        parts[19] = string(abi.encodePacked("90%: ", lateParts[2]));
 
-        parts[18] = '</text><text x="10" y="200" class="base">';
+        parts[20] = '</text><text x="10" y="350" class="base">';
 
-        parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
+        parts[21] = string(abi.encodePacked("100%: ", lateParts[3]));
 
-        parts[20] = "</text></svg>";
+
+        parts[22] = "</text></svg>";
 
         string memory output = string(
             abi.encodePacked(
@@ -239,7 +282,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             )
         );
         output = string(
-            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
+            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20], parts[21], parts[22])
         );
 
         string memory json = Base64.encode(
