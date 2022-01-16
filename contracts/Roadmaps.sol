@@ -10,8 +10,10 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
+import "./strings.sol";
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
+
     string[] private nftPrefixChoices = [
         "Dizzy",
         "Cool",
@@ -59,7 +61,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We airdrop 30 rare tokens to 10 special members",
         "We open the Discord to holders",
         "We open the private Telegram group to members",
-        "We hire a community manager",
+        "We hire a community manager"
         "We hire some cheap interns",
         "We hire some questionable developers",
         "We launch a virtual event where we will talk about NFTs",
@@ -106,10 +108,6 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We launch a play-to-earn game, allowing holders to stake their NFT for $MEME"
     ];
 
-    string[] private generousEvents = ["placeholder"];
-
-    string[] private stingyEvents = ["placeholder"];
-
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
     }
@@ -132,10 +130,10 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
     function getNftName(uint256 tokenId) public view returns (string memory) {
         uint256 randPrefix = random(
-            string(abi.encodePacked(toString(tokenId), "prefix"))
+            string(abi.encodePacked(strings.toString(tokenId), "prefix"))
         );
         uint256 randEntity = random(
-            string(abi.encodePacked(toString(tokenId), "entity"))
+            string(abi.encodePacked(strings.toString(tokenId), "entity"))
         );
         string memory nftName = string(
             abi.encodePacked(
@@ -164,17 +162,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string[3] memory)
     {
-        uint256 rand = random(toString(tokenId));
+        uint256 rand = random(strings.toString(tokenId));
 
         string[] memory shuffledEarlyEvents = shuffle(earlyEvents);
 
-        string[3] memory output = [
+        return [
             shuffledEarlyEvents[rand % shuffledEarlyEvents.length],
             shuffledEarlyEvents[(rand + 1) % shuffledEarlyEvents.length],
             shuffledEarlyEvents[(rand + 2) % shuffledEarlyEvents.length]
         ];
-
-        return output;
     }
 
     function middlePluck(uint256 tokenId)
@@ -182,16 +178,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string[3] memory)
     {
-        uint256 rand = random(toString(tokenId));
+        uint256 rand = random(strings.toString(tokenId));
 
         string[] memory shuffledMiddleEvents = shuffle(middleEvents);
 
-        string[3] memory output = [
+        return [
             shuffledMiddleEvents[rand % shuffledMiddleEvents.length],
             shuffledMiddleEvents[(rand + 1) % shuffledMiddleEvents.length],
             shuffledMiddleEvents[(rand + 2) % shuffledMiddleEvents.length]
         ];
-        return output;
     }
 
     function latePluck(uint256 tokenId)
@@ -199,17 +194,16 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string[4] memory)
     {
-        uint256 rand = random(string(abi.encodePacked(toString(tokenId))));
+        uint256 rand = random(string(abi.encodePacked(strings.toString(tokenId))));
 
         string[] memory shuffledLateEvents = shuffle(lateEvents);
 
-        string[4] memory output = [
+        return [
             shuffledLateEvents[rand % shuffledLateEvents.length],
             shuffledLateEvents[(rand + 1) % shuffledLateEvents.length],
             shuffledLateEvents[(rand + 2) % shuffledLateEvents.length],
             shuffledLateEvents[(rand + 3) % shuffledLateEvents.length]
         ];
-        return output;
     }
 
     function tokenURI(uint256 tokenId)
@@ -218,7 +212,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
-        uint256 rand = random(toString(tokenId));
+        uint256 rand = random(strings.toString(tokenId));
 
         string[23] memory parts;
 
@@ -238,14 +232,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[4] = '</text><text x="10" y="60" class="base">';
 
-        uint256 rarenum = rand % 21;
-        if (rarenum < 15) {
-            parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
-        } else if (rarenum < 18) {
-            parts[5] = string(abi.encodePacked("27.1828%: ", earlyparts[2]));
-        } else {
-            parts[5] = string(abi.encodePacked("31.4159%: ", earlyparts[2]));
-        }
+        parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
@@ -257,12 +244,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
-        uint256 rarenum2 = rand % 42;
-        if (rarenum2 < 36) {
-            parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
-        } else {
-            parts[11] = string(abi.encodePacked("69%: ", middleparts[2]));
-        }
+        parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
 
         parts[12] = '</text><text x="10" y="140" class="base">';
 
@@ -278,12 +260,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[18] = '</text><text x="10" y="200" class="base">';
 
-        uint256 rarenum3 = rand % 69;
-        if (rarenum3 < 67) {
-            parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
-        } else {
-            parts[19] = string(abi.encodePacked("110%: ", lateParts[3]));
-        }
+        parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
 
         parts[20] = '</text><text x="10" y="220" class="base">';
 
@@ -335,9 +312,9 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             bytes(
                 string(
                     abi.encodePacked(
-                        '{"name": "Bag #',
-                        toString(tokenId),
-                        '", "description": "Loot is randomized adventurer gear generated and stored on chain. Stats, images, and other functionality are intentionally omitted for others to interpret. Feel free to use Loot in any way you want.", "image": "data:image/svg+xml;base64,',
+                        '{"name": "Roadmap #',
+                        strings.toString(tokenId),
+                        '", "description": "Generative roadmaps", "image": "data:image/svg+xml;base64,',
                         Base64.encode(bytes(output)),
                         '"}'
                     )
@@ -354,33 +331,6 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     function claim(uint256 tokenId) public nonReentrant {
         require(tokenId > 0 && tokenId < 7778, "Token ID invalid");
         _safeMint(_msgSender(), tokenId);
-    }
-
-    function ownerClaim(uint256 tokenId) public nonReentrant onlyOwner {
-        require(tokenId > 7777 && tokenId < 8001, "Token ID invalid");
-        _safeMint(owner(), tokenId);
-    }
-
-    function toString(uint256 value) internal pure returns (string memory) {
-        // Inspired by OraclizeAPI's implementation - MIT license
-        // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
-
-        if (value == 0) {
-            return "0";
-        }
-        uint256 temp = value;
-        uint256 digits;
-        while (temp != 0) {
-            digits++;
-            temp /= 10;
-        }
-        bytes memory buffer = new bytes(digits);
-        while (value != 0) {
-            digits -= 1;
-            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
-            value /= 10;
-        }
-        return string(buffer);
     }
 
     constructor() ERC721("Roadmaps", "ROAD") Ownable() {}
