@@ -11,9 +11,9 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
 import "./strings.sol";
+import {RoadmapsConstants} from "./RoadmapsConstants.sol";
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
-
     string[] private nftPrefixChoices = [
         "Dizzy",
         "Cool",
@@ -146,25 +146,25 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     }
 
     function getEarly(uint256 tokenId) public view returns (string[3] memory) {
-        return earlyPluck(tokenId);
+        return pluck(tokenId, earlyEvents);
     }
 
     function getMiddle(uint256 tokenId) public view returns (string[3] memory) {
-        return middlePluck(tokenId);
+        return pluck(tokenId, middleEvents);
     }
 
     function getLate(uint256 tokenId) public view returns (string[4] memory) {
         return latePluck(tokenId);
     }
 
-    function earlyPluck(uint256 tokenId)
+    function pluck(uint256 tokenId, string[] memory arr)
         internal
-        view
+        pure
         returns (string[3] memory)
     {
         uint256 rand = random(strings.toString(tokenId));
 
-        string[] memory shuffledEarlyEvents = shuffle(earlyEvents);
+        string[] memory shuffledEarlyEvents = shuffle(arr);
 
         return [
             shuffledEarlyEvents[rand % shuffledEarlyEvents.length],
@@ -173,28 +173,14 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         ];
     }
 
-    function middlePluck(uint256 tokenId)
-        internal
-        view
-        returns (string[3] memory)
-    {
-        uint256 rand = random(strings.toString(tokenId));
-
-        string[] memory shuffledMiddleEvents = shuffle(middleEvents);
-
-        return [
-            shuffledMiddleEvents[rand % shuffledMiddleEvents.length],
-            shuffledMiddleEvents[(rand + 1) % shuffledMiddleEvents.length],
-            shuffledMiddleEvents[(rand + 2) % shuffledMiddleEvents.length]
-        ];
-    }
-
     function latePluck(uint256 tokenId)
         internal
         view
         returns (string[4] memory)
     {
-        uint256 rand = random(string(abi.encodePacked(strings.toString(tokenId))));
+        uint256 rand = random(
+            string(abi.encodePacked(strings.toString(tokenId)))
+        );
 
         string[] memory shuffledLateEvents = shuffle(lateEvents);
 
@@ -214,59 +200,65 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         uint256 rand = random(strings.toString(tokenId));
 
+        string[3] memory earlyparts = getEarly(tokenId);
+        string[3] memory middleparts = getMiddle(tokenId);
+        string[4] memory lateParts = getLate(tokenId);
+
         string[23] memory parts;
 
         parts[
             0
         ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
-        string[3] memory earlyparts = getEarly(tokenId);
-        string[3] memory middleparts = getMiddle(tokenId);
-        string[4] memory lateParts = getLate(tokenId);
-
-        parts[1] = string(abi.encodePacked("10%: ", earlyparts[0]));
-
-        parts[2] = '</text><text x="10" y="40" class="base">';
-
-        parts[3] = string(abi.encodePacked("20%: ", earlyparts[1]));
-
-        parts[4] = '</text><text x="10" y="60" class="base">';
-
-        parts[5] = string(abi.encodePacked("30%: ", earlyparts[2]));
-
-        parts[6] = '</text><text x="10" y="80" class="base">';
-
-        parts[7] = string(abi.encodePacked("40%: ", middleparts[0]));
-
-        parts[8] = '</text><text x="10" y="100" class="base">';
-
-        parts[9] = string(abi.encodePacked("50%: ", middleparts[1]));
-
-        parts[10] = '</text><text x="10" y="120" class="base">';
-
-        parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
-
-        parts[12] = '</text><text x="10" y="140" class="base">';
-
-        parts[13] = string(abi.encodePacked("70%: ", lateParts[0]));
-
-        parts[14] = '</text><text x="10" y="160" class="base">';
-
-        parts[15] = string(abi.encodePacked("80%: ", lateParts[1]));
-
-        parts[16] = '</text><text x="10" y="180" class="base">';
-
-        parts[17] = string(abi.encodePacked("90%: ", lateParts[2]));
-
-        parts[18] = '</text><text x="10" y="200" class="base">';
-
-        parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
-
-        parts[20] = '</text><text x="10" y="220" class="base">';
-
-        parts[21] = string(
-            abi.encodePacked("Roadmap for the ", getNftName(tokenId))
+        string memory NFTname = string(
+            abi.encodePacked(
+                nftPrefixChoices[rand % nftPrefixChoices.length],
+                " ",
+                nftEntityChoices[rand % nftEntityChoices.length]
+            )
         );
+
+        parts[1] = string(abi.encodePacked("Roadmap for ", NFTname));
+
+        parts[2] = '</text><text x="10" y="80" class="base">';
+
+        parts[3] = string(abi.encodePacked("10%: ", earlyparts[0]));
+
+        parts[4] = '</text><text x="10" y="110" class="base">';
+
+        parts[5] = string(abi.encodePacked("20%: ", earlyparts[1]));
+
+        parts[6] = '</text><text x="10" y="140" class="base">';
+
+        parts[7] = string(abi.encodePacked("30%: ", earlyparts[2]));
+
+        parts[8] = '</text><text x="10" y="170" class="base">';
+
+        parts[9] = string(abi.encodePacked("40%: ", earlyparts[0]));
+
+        parts[10] = '</text><text x="10" y="200" class="base">';
+
+        parts[11] = string(abi.encodePacked("50%: ", earlyparts[0]));
+
+        parts[12] = '</text><text x="10" y="230" class="base">';
+
+        parts[13] = string(abi.encodePacked("60%: ", middleparts[2]));
+
+        parts[14] = '</text><text x="10" y="260" class="base">';
+
+        parts[15] = string(abi.encodePacked("70%: ", lateParts[0]));
+
+        parts[16] = '</text><text x="10" y="290" class="base">';
+
+        parts[17] = string(abi.encodePacked("80%: ", lateParts[1]));
+
+        parts[18] = '</text><text x="10" y="320" class="base">';
+
+        parts[19] = string(abi.encodePacked("90%: ", lateParts[2]));
+
+        parts[20] = '</text><text x="10" y="350" class="base">';
+
+        parts[21] = string(abi.encodePacked("100%: ", lateParts[3]));
 
         parts[22] = "</text></svg>";
 
