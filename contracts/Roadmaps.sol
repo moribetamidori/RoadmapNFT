@@ -16,10 +16,14 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We pay back our investors",
         "We pay back our grandparents",
         "We pay back the mafia",
-        "We show our appeciation by airdropping 5 free tokens",
-        "We show our appeciation by airdropping 20 free tokens",
-        "We show our appeciation by airdropping 30 free tokens to 10 special members",
-        "Our first global event will take place in Metaverse",
+        "We show our appeciation by airdropping 5 free tokens to holders",
+        "We show our appeciation by airdropping 20 free tokens to lucky members",
+        "We airdrop 30 rare tokens to 10 special members",
+        "We open the Discord to holders",
+        "We open the private Telegram group to members",
+        "We hire a community manager",
+        "We hire some cheap interns",
+        "We hire some questionable developers",
         "We will launch a virtual event where we will talk about NFTs",
         "We will release the whitepaper, describing tokenomic deflationary mechanisms",
         "We will introduce the origin storyline"
@@ -32,7 +36,11 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We will select 30 holders to receive a hat with the artist's signature",
         "We will launch the $ROAD utility token, with 10,000,000 initial supply",
         "We will launch the $SCAM utility token, with 200,000,000,000 initial supply",
-        "We will launch the $MEME utility token, with 69,420 initial supply"
+        "We will launch the $MEME utility token, with 69,420 initial supply",
+        "We hold a community raffle for a LEGENDARY NFT",
+        "We hold a community raffle for 5,000 $ROAD",
+        "We will hold a meme contest, and airdrop a LEGENDARY NFT to the winners",
+        "We will hold an art contest, and airdrop 10,000 $ROAD to the winners"
     ];
 
     string[] private lateEvents = [
