@@ -11,7 +11,6 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
 import "./strings.sol";
-import {RoadmapsConstants} from "./RoadmapsConstants.sol";
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     string[] private nftPrefixChoices = [
