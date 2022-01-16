@@ -12,43 +12,36 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
-    string[] private brandNameChoices = [
-        "Marvel",
-        "Nike",
-        "Louis Vutton",
-        "Patron"
+    string[] private nftPrefixChoices = [
+        "Dizzy",
+        "Cool",
+        "Tripping",
+        "Sad",
+        "Confused",
+        "Vibing",
+        "Invisible",
+        "Dumb",
+        "Sleepy",
+        "Hungry",
+        "Mindful",
+        "Conscious",
+        "Epic",
+        "Legendary"
     ];
 
     string[] private nftEntityChoices = [
-        "duck",
-        "goose",
-        "ant",
-        "flower",
-        "banana",
-        "hat",
-        "knight",
-        "sailor",
-        "guy",
-        "gal",
-        "wolf",
-        "elephant"
-    ];
-
-    string[] private nftPrefixChoices = [
-        "dizzy",
-        "cool",
-        "tripping",
-        "sad",
-        "confused",
-        "vibing",
-        "invisible",
-        "dumb",
-        "sleepy",
-        "hungry",
-        "mindful",
-        "conscious",
-        "epic",
-        "legendary"
+        "Ducks",
+        "Geese",
+        "Ants",
+        "Flowers",
+        "Bananas",
+        "Hats",
+        "Knights",
+        "Sailors",
+        "Guys",
+        "Gals",
+        "Wolves",
+        "Elephants"
     ];
 
     string[] private GroupChoices = [
@@ -59,20 +52,106 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "community members",
         "grandmas"
     ];
-    
+
+    string[] private brandNameChoices = [
+        "Marvel",
+        "Nike",
+        "Louis Vutton",
+        "Patron"
+    ];
+
     string[] private numOfPeople = ["1", "10", "100", "1000", "10000", "31415"];
 
-    string[] private amountMoney = ["1","10","69","420","666","999","4242","8888", "10000"];
+    string[] private amountMoney = [
+        "1",
+        "10",
+        "69",
+        "420",
+        "666",
+        "999",
+        "4242",
+        "8888",
+        "10000"
+    ];
 
     string[] private physicalArt = ["t-shirt", "cup", "print"];
 
-    string[] private midEvents = ["Jupiter", "Saturn"];
+    string[] private earlyEvents = [
+        string(
+            abi.encodePacked(
+                "We pay back and feed our "
+                // GroupChoices[rand % GroupChoices.length]
+            )
+        ),
+        string(
+            abi.encodePacked(
+                "We distribute 10 free claim opportunities to early ",
+                // GroupChoices[rand % GroupChoices.length],
+                "."
+            )
+        ),
+        "Our first global event will take place in Metaverse",
+        "We will launch a virtual event where we will talk about NFTs",
+        string(
+            abi.encodePacked(
+                "We want to show our appreciation by airdropping special 5 ",
+                // NFTname,
+                " to 5 early ",
+                // GroupChoices[rand % GroupChoices.length],
+                "."
+            )
+        ),
+        string(
+            abi.encodePacked(
+                "We airdrop 10 ",
+                "[NFTName]",
+                " in discord secretly."
+            )
+        ),
+        "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
+        "We will have the origins and storyline Introduced"
+    ];
 
-    string[] private namePrefixes = ["Legendary", "Amazing"];
+    string[] private middleEvents = [
+        string(
+            abi.encodePacked(
+                "Select ",
+                // numOfPeople[rand % numOfPeople.length],
+                " holders to give away ",
+                // physicalArt[rand % physicalArt.length],
+                " with artist' signature."
+            )
+        ),
+        string(
+            abi.encodePacked(
+                "Launch $",
+                // tokenName,
+                " utility token"
+            )
+        ),
+        string(
+            abi.encodePacked(
+                "Community Raffle! Lucky ",
+                // numOfPeople[(rand + 1) % numOfPeople.length],
+                " holders will be given $",
+                // amountMoney[rand % amountMoney.length],
+                "."
+            )
+        )
+    ];
 
-    string[] private nameSuffixes = ["of Doom", "of the World"];
-
-    string[] private suffixes = ["bane", "shadow"];
+    string[] private lateEvents = [
+        string(
+            abi.encodePacked(
+                "We collaborate with ",
+                // brandNameChoices[rand % brandNameChoices.length],
+                " on an EXCLUSIVE merch drop"
+            )
+        ),
+        "We buy a plot of land in the Metaverse",
+        "We release Roadmap 2.0",
+        "We release edition #1 of our comic"
+    ];
 
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
@@ -81,7 +160,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     function toUpper(string memory str) internal pure returns (string memory) {
         bytes memory bStr = bytes(str);
         bytes memory bUpper = new bytes(bStr.length);
-        for (uint i = 0; i < bStr.length; i++) {
+        for (uint256 i = 0; i < bStr.length; i++) {
             // Lowercase character...
             if ((uint8(bStr[i]) >= 97) && (uint8(bStr[i]) <= 122)) {
                 // So we subtract 32 to make it uppercase
@@ -93,12 +172,16 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return string(bUpper);
     }
 
-    function getSlice(uint256 begin, uint256 end, string memory text) public pure returns (string memory) {
-        bytes memory a = new bytes(end-begin+1);
-        for(uint i=0;i<=end-begin;i++){
-            a[i] = bytes(text)[i+begin-1];
+    function getSlice(
+        uint256 begin,
+        uint256 end,
+        string memory text
+    ) public pure returns (string memory) {
+        bytes memory a = new bytes(end - begin + 1);
+        for (uint256 i = 0; i <= end - begin; i++) {
+            a[i] = bytes(text)[i + begin - 1];
         }
-        return string(a);    
+        return string(a);
     }
 
     function getEarly(uint256 tokenId) public view returns (string[3] memory) {
@@ -113,16 +196,21 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         return latePluck(tokenId);
     }
 
-    function pluck(
-        uint256 tokenId,
-        string memory keyPrefix,
-        string[] memory sourceArray
-    ) internal view returns (string memory) {
-        uint256 rand = random(
-            string(abi.encodePacked(keyPrefix, toString(tokenId)))
+    function getNftName(uint256 tokenId) public view returns (string memory) {
+        uint256 randPrefix = random(
+            string(abi.encodePacked(toString(tokenId), "prefix"))
         );
-        string memory output = sourceArray[rand % sourceArray.length];
-        return output;
+        uint256 randEntity = random(
+            string(abi.encodePacked(toString(tokenId), "entity"))
+        );
+        string memory nftName = string(
+            abi.encodePacked(
+                nftPrefixChoices[randPrefix % nftPrefixChoices.length],
+                " ",
+                nftEntityChoices[randEntity % nftEntityChoices.length]
+            )
+        );
+        return nftName;
     }
 
     function earlyPluck(uint256 tokenId)
@@ -132,72 +220,28 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         uint256 rand = random(toString(tokenId));
 
-        string memory NFTname = string(
-            abi.encodePacked(
-                nftPrefixChoices[rand % nftPrefixChoices.length],
-                " ",
-                nftEntityChoices[rand % nftEntityChoices.length]
-            )
-        );
-
-        string memory groupName = GroupChoices[rand % GroupChoices.length];
-
-        // string memory brandName = brandNameChoices[
-        //     rand % brandNameChoices.length
-        // ];
-        string[8] memory earlyEvents = [
-            string(abi.encodePacked("We pay back and feed our ", groupName)),
-            string(
-                abi.encodePacked(
-                    "We distribute 10 free claim opportunities to early ",
-                    groupName,
-                    "."
-                )
-            ),
-            "Our first global event will take place in Metaverse",
-            "We will launch a virtual event where we will talk about NFTs",
-            string(
-                abi.encodePacked(
-                    "We want to show our appreciation by airdropping special 5 ",
-                    NFTname,
-                    " to 5 early ",
-                    groupName,
-                    "."
-                )
-            ),
-            string(
-                abi.encodePacked(
-                    "We airdrop 10 ",
-                    NFTname,
-                    " in discord secretly."
-                )
-            ),
-            "We will release whitepaper, describing tokenomicsm deflationary mechanisms, and other smart stuff",
-            "We will have the origins & storyline Introduced"
-        ];
-
         string[3] memory output = [
             earlyEvents[rand % earlyEvents.length],
             earlyEvents[(rand + 1) % earlyEvents.length],
             earlyEvents[(rand + 2) % earlyEvents.length]
-        ]; //could be more flexible
-
-        string[2] memory earlyEvents_generous = [
-            "We will launch a meme challenge among holders -- 10ETH prize",
-            string(
-                abi.encodePacked(
-                    "We will give away 99% of our sales to our ",
-                    groupName,
-                    "."
-                )
-            )
         ];
 
-        string[1] memory earlyEvents_lazy = ["We will open a Discord"];
+        // string[2] memory earlyEvents_generous = [
+        //     "We will launch a meme challenge among holders -- 10ETH prize",
+        //     string(
+        //         abi.encodePacked(
+        //             "We will give away 99% of our sales to our ",
+        //             GroupChoices[rand % GroupChoices.length],
+        //             "."
+        //         )
+        //     )
+        // ];
 
-        string[1] memory earlyEvents_dramatic = [
-            "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
-        ];
+        // string[1] memory earlyEvents_lazy = ["We will open a Discord"];
+
+        // string[1] memory earlyEvents_dramatic = [
+        //     "Zopzido, our artist, girl boss, and founder, resigns from her job and realizes her childhood dream of becoming a full-time artist."
+        // ];
 
         return output;
     }
@@ -207,51 +251,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         view
         returns (string[3] memory)
     {
-         uint256 rand = random(
-            toString(tokenId)
-        );
+        uint256 rand = random(toString(tokenId));
 
-        string memory artItem = physicalArt[rand % physicalArt.length];
-
-        string memory numPeople = numOfPeople[rand % numOfPeople.length];
-
-        string memory numPeople2 = numOfPeople[(rand+1) % numOfPeople.length];
-
-        string memory money = amountMoney[rand % amountMoney.length];
-        
-        string memory tokenPrefix = toUpper(nftPrefixChoices[rand % nftPrefixChoices.length]);
-        
-        string memory tokenEntity = toUpper(nftEntityChoices[rand % nftEntityChoices.length]);
-
-        string memory tokenName = string(abi.encodePacked(
-            getSlice(1,3,tokenPrefix),
-            getSlice(1,3,tokenEntity)));
-
-
-        string[3] memory middleEvents = [
-            string (
-                abi.encodePacked(
-                    "Select ", numPeople, " holders to give away ", artItem, " with artist' signature."
-                )
-            ),
-            string (
-                abi.encodePacked(
-                    "Launch $", tokenName, " utility token"
-                )
-            ),
-            string (
-                abi.encodePacked("Community Raffle! Lucky ", numPeople2, " holders will be given $", money, "."
-                )
-            )
+        string[3] memory output = [
+            middleEvents[rand % middleEvents.length],
+            middleEvents[(rand + 1) % middleEvents.length],
+            middleEvents[(rand + 2) % middleEvents.length]
         ];
-        
-        string[3] memory output = [middleEvents[rand % middleEvents.length],
-                                middleEvents[(rand+1) % middleEvents.length],
-                                middleEvents[(rand+2) % middleEvents.length] ]; //could be more flexible
         return output;
     }
-
-    
 
     function latePluck(uint256 tokenId)
         internal
@@ -260,22 +268,6 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         uint256 rand = random(string(abi.encodePacked(toString(tokenId))));
 
-        string memory brandName = brandNameChoices[
-            rand % brandNameChoices.length
-        ];
-
-        string[4] memory lateEvents = [
-            string(
-                abi.encodePacked(
-                    "We collaborate with ",
-                    brandName,
-                    " on an EXCLUSIVE merch drop"
-                )
-            ),
-            "We buy a plot of land in the Metaverse",
-            "We release Roadmap 2.0",
-            "We release edition #1 of our comic"
-        ];
         // "We buy a plot of land in the Metaverse",
         // "We host " + eventType + "in the Metaverse",
         // "We launch a Play-To-Earn game, allowing you to stake your " + animalName,
@@ -289,7 +281,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             lateEvents[(rand + 1) % lateEvents.length],
             lateEvents[(rand + 2) % lateEvents.length],
             lateEvents[(rand + 3) % lateEvents.length]
-        ]; //could be more flexible
+        ];
         return output;
     }
 
@@ -299,14 +291,14 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         override
         returns (string memory)
     {
-        // some randomization of formatting
         uint256 rand = random(toString(tokenId));
 
-        string[21] memory parts;
+        string[23] memory parts;
         parts[
             0
         ] = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" viewBox="0 0 550 350"><style>.base { fill: white; font-family: serif; font-size: 14px; }</style><rect width="100%" height="100%" fill="black" /><text x="10" y="20" class="base">';
 
+        string memory nftName = getNftName(tokenId);
         string[3] memory earlyparts = getEarly(tokenId);
         string[3] memory middleparts = getMiddle(tokenId);
         string[4] memory lateParts = getLate(tokenId);
@@ -330,11 +322,11 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
-        parts[7] = string(abi.encodePacked("10%: ",earlyparts[0]));
+        parts[7] = string(abi.encodePacked("40%: ", earlyparts[0]));
 
         parts[8] = '</text><text x="10" y="100" class="base">';
 
-        parts[9] = string(abi.encodePacked("10%: ",earlyparts[0]));
+        parts[9] = string(abi.encodePacked("50%: ", earlyparts[0]));
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
@@ -356,7 +348,11 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
 
-        parts[20] = "</text></svg>";
+        parts[20] = '</text><text x="10" y="220" class="base">';
+
+        parts[21] = string(abi.encodePacked("Roadmap for the ", nftName));
+
+        parts[22] = "</text></svg>";
 
         string memory output = string(
             abi.encodePacked(
@@ -385,7 +381,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             )
         );
         output = string(
-            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
+            abi.encodePacked(
+                output,
+                parts[17],
+                parts[18],
+                parts[19],
+                parts[20],
+                parts[21],
+                parts[22]
+            )
         );
 
         string memory json = Base64.encode(
