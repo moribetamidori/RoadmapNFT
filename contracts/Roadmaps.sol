@@ -12,6 +12,44 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "base64-sol/base64.sol";
 
 contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
+    string[] private nftPrefixChoices = [
+        "Dizzy",
+        "Cool",
+        "Tripping",
+        "Sad",
+        "Confused",
+        "Vibing",
+        "Invisible",
+        "Dumb",
+        "Sleepy",
+        "Hungry",
+        "Mindful",
+        "Conscious",
+        "Epic",
+        "Legendary",
+        "Crypto",
+        "Blockchain",
+        "Doodle",
+        "Bored"
+    ];
+
+    string[] private nftEntityChoices = [
+        "Ducks",
+        "Geese",
+        "Ants",
+        "Flowers",
+        "Bananas",
+        "Hats",
+        "Knights",
+        "Sailors",
+        "Guys",
+        "Gals",
+        "Wolves",
+        "Elephants",
+        "Vaynerchuks",
+        "Apes"
+    ];
+
     string[] private earlyEvents = [
         "We pay back our investors",
         "We pay back our grandparents",
@@ -24,23 +62,26 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We hire a community manager",
         "We hire some cheap interns",
         "We hire some questionable developers",
-        "We will launch a virtual event where we will talk about NFTs",
-        "We will release the whitepaper, describing tokenomic deflationary mechanisms",
-        "We will introduce the origin storyline"
+        "We launch a virtual event where we will talk about NFTs",
+        "We release the whitepaper, describing tokenomic deflationary mechanisms",
+        "We will introduce the origin storyline",
+        "We do...absolutely nothing"
     ];
 
     string[] private middleEvents = [
-        "We will select 5 holders to receive a poster with the artist's signature",
+        "We select 5 holders to receive a poster with the artist's signature",
         "We will select 10 holders to receive a shoe with the artist's signature",
-        "We will select 20 holders to receive a shirt with the artist's signature",
+        "We select 20 holders to receive a shirt with the artist's signature",
         "We will select 30 holders to receive a hat with the artist's signature",
-        "We will launch the $ROAD utility token, with 10,000,000 initial supply",
-        "We will launch the $SCAM utility token, with 200,000,000,000 initial supply",
+        "We launch the $ROAD utility token, with 10,000,000 initial supply",
+        "We launch the $SCAM utility token, with 200,000,000,000 initial supply",
         "We will launch the $MEME utility token, with 69,420 initial supply",
         "We hold a community raffle for a LEGENDARY NFT",
         "We hold a community raffle for 5,000 $ROAD",
         "We will hold a meme contest, and airdrop a LEGENDARY NFT to the winners",
-        "We will hold an art contest, and airdrop 10,000 $ROAD to the winners"
+        "We hold an art contest, and airdrop 10,000 $ROAD to the winners",
+        "We launch FutureDAO, dedicated to saving the future",
+        "We launch MetaDAO, a true DAO for the metaverse"
     ];
 
     string[] private lateEvents = [
@@ -52,15 +93,22 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
         "We buy a strip club in the Metaverse",
         "We buy a bar in the Metaverse",
         "We buy an Arby's in the Metaverse",
+        "We buy Park Place in the Metaverse",
         "We will release ROADMAP 2.0",
         "We release edition #1 of our limited-edition comic book",
         "We will donate 5 ethereum to the Metaverse Foundation",
-        "We will donate 10 ethereum to the Coal-",
+        "We donate 10 ethereum to the Coal Miners Association",
         "We will host an IRL NFT gallery in Berlin",
-        "We will host an IRL NFT gallery in Las Vegas",
+        "We host an IRL NFT gallery in Las Vegas",
         "We will release 3D avatars for cross-metaverse usage",
-        "We launch a play-to-earn game, allowing holders to stake their NFT for $ROAD"
+        "We launch a play-to-earn game, allowing holders to stake their NFT for $ROAD",
+        "We launch a play-to-earn game, allowing holders to stake their NFT for $SCAM",
+        "We launch a play-to-earn game, allowing holders to stake their NFT for $MEME"
     ];
+
+    string[] private generousEvents = ["placeholder"];
+
+    string[] private stingyEvents = ["placeholder"];
 
     function random(string memory input) internal pure returns (uint256) {
         return uint256(keccak256(abi.encodePacked(input)));
@@ -80,6 +128,23 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             arr[i] = temp;
         }
         return arr;
+    }
+
+    function getNftName(uint256 tokenId) public view returns (string memory) {
+        uint256 randPrefix = random(
+            string(abi.encodePacked(toString(tokenId), "prefix"))
+        );
+        uint256 randEntity = random(
+            string(abi.encodePacked(toString(tokenId), "entity"))
+        );
+        string memory nftName = string(
+            abi.encodePacked(
+                nftPrefixChoices[randPrefix % nftPrefixChoices.length],
+                " ",
+                nftEntityChoices[randEntity % nftEntityChoices.length]
+            )
+        );
+        return nftName;
     }
 
     function getEarly(uint256 tokenId) public view returns (string[3] memory) {
@@ -155,7 +220,7 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
     {
         uint256 rand = random(toString(tokenId));
 
-        string[21] memory parts;
+        string[23] memory parts;
 
         parts[
             0
@@ -184,15 +249,20 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[6] = '</text><text x="10" y="80" class="base">';
 
-        parts[7] = string(abi.encodePacked("40%: ", earlyparts[0]));
+        parts[7] = string(abi.encodePacked("40%: ", middleparts[0]));
 
         parts[8] = '</text><text x="10" y="100" class="base">';
 
-        parts[9] = string(abi.encodePacked("50%: ", earlyparts[0]));
+        parts[9] = string(abi.encodePacked("50%: ", middleparts[1]));
 
         parts[10] = '</text><text x="10" y="120" class="base">';
 
-        parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
+        uint256 rarenum2 = rand % 42;
+        if (rarenum2 < 36) {
+            parts[11] = string(abi.encodePacked("60%: ", middleparts[2]));
+        } else {
+            parts[11] = string(abi.encodePacked("69%: ", middleparts[2]));
+        }
 
         parts[12] = '</text><text x="10" y="140" class="base">';
 
@@ -208,9 +278,20 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
 
         parts[18] = '</text><text x="10" y="200" class="base">';
 
-        parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
+        uint256 rarenum3 = rand % 69;
+        if (rarenum3 < 67) {
+            parts[19] = string(abi.encodePacked("100%: ", lateParts[3]));
+        } else {
+            parts[19] = string(abi.encodePacked("110%: ", lateParts[3]));
+        }
 
-        parts[20] = "</text></svg>";
+        parts[20] = '</text><text x="10" y="220" class="base">';
+
+        parts[21] = string(
+            abi.encodePacked("Roadmap for the ", getNftName(tokenId))
+        );
+
+        parts[22] = "</text></svg>";
 
         string memory output = string(
             abi.encodePacked(
@@ -239,7 +320,15 @@ contract Roadmaps is ERC721Enumerable, ReentrancyGuard, Ownable {
             )
         );
         output = string(
-            abi.encodePacked(output, parts[17], parts[18], parts[19], parts[20])
+            abi.encodePacked(
+                output,
+                parts[17],
+                parts[18],
+                parts[19],
+                parts[20],
+                parts[21],
+                parts[22]
+            )
         );
 
         string memory json = Base64.encode(
